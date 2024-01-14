@@ -84,6 +84,14 @@ pub trait ConstraintSystem<Scalar: PrimeField>: Sized + Send {
         A: FnOnce() -> AR,
         AR: Into<String>;
 
+    /// Strict allocation
+    fn alloc_strict<A, AR>(&mut self, annotation: A, f: Scalar) -> Result<Variable, SynthesisError>
+    where
+        A: FnOnce() -> AR,
+        AR: Into<String> {
+        self.alloc(annotation, || Ok(f))
+    }
+
     /// Allocate a public variable in the constraint system. The provided function is used to
     /// determine the assignment of the variable.
     fn alloc_input<F, A, AR>(&mut self, annotation: A, f: F) -> Result<Variable, SynthesisError>
@@ -91,6 +99,15 @@ pub trait ConstraintSystem<Scalar: PrimeField>: Sized + Send {
         F: FnOnce() -> Result<Scalar, SynthesisError>,
         A: FnOnce() -> AR,
         AR: Into<String>;
+
+
+    /// Strict input allocation
+    fn alloc_input_strict<A, AR>(&mut self, annotation: A, f: Scalar) -> Result<Variable, SynthesisError>
+    where
+        A: FnOnce() -> AR,
+        AR: Into<String> {
+        self.alloc_input(annotation, || Ok(f))
+    }
 
     /// Enforce that `A` * `B` = `C`. The `annotation` function is invoked in testing contexts
     /// in order to derive a unique name for the constraint in the current namespace.
