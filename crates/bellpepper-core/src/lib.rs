@@ -19,6 +19,8 @@ mod lc;
 pub use lc::{Index, LinearCombination, Variable};
 mod constraint_system;
 pub use constraint_system::{Circuit, ConstraintSystem, Namespace, SynthesisError};
+mod dynamic;
+pub use dynamic::DynamicCS;
 mod gadgets;
 pub use gadgets::{boolean, num};
 mod util_cs;
